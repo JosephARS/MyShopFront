@@ -1,0 +1,67 @@
+<div class="main-container">
+
+  <h2>CARRITO DE COMPRAS</h2>
+
+  <h3>Productos en el carrito: ({{totalArticulos}})</h3>
+
+
+  <div class="container">
+    <div class="izquierda">
+
+      <div class="encabezado" *ngIf="totalValor === 0">
+        <mat-card><strong>Tu carrito de compras está vacío.</strong></mat-card>
+      </div>
+
+      <div class="productos">
+
+        <div class="producto" *ngFor="let producto of listaArticulosCarrito">
+
+          <mat-card class="mat-elevation-z3" >
+            <mat-card-header>
+              <mat-card-title>Información del producto</mat-card-title>
+            </mat-card-header>
+            <hr>
+            <mat-card-content class="contenido-producto">
+              <p><img src={{producto.imgUrl}} alt={{producto.nombre}}></p>
+              <p><span class="tituloCodigo">Código: {{producto.id}}</span>
+                <span class="tituloNombre">{{producto.nombre}} </span> </p>
+              <p><span>Cantidad: {{producto.cantidadCompra}} </span>
+                <br><br><br>
+                <span>{{producto.cantidadCompra * producto.precio | currency}}</span></p>
+              <p (click)="onClickEliminar(producto)"> <span class="tituloEliminar">Eliminar</span></p>
+
+            </mat-card-content>
+          </mat-card>
+
+        </div>
+
+        <button mat-flat-button (click)="onClickVolverTienda()" >Volver a la tienda</button>
+
+
+      </div>
+
+    </div>
+
+    <div class="derecha">
+      <mat-card class="mat-elevation-z3 carro-info" >
+        <mat-card-header>
+          <mat-card-title>Mi carrito</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <p class="tituloCampo"><span>Subtotal: </span><span class="flex-spacer"></span> {{totalValor | currency}}</p>
+          <p class="tituloCampo"><span>Envio gratis: </span> <span class="flex-spacer"></span> {{ 0 | currency}} </p>
+          <hr>
+          <p class="tituloCampo"><span><strong>Total </strong> </span><span class="flex-spacer"></span> {{totalValor | currency}} </p>
+
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-flat-button color="warn" *ngIf="totalValor !== 0">Ir a pagar</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+  </div>
+
+
+</div>

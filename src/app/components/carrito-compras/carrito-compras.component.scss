@@ -1,0 +1,87 @@
+.main-container{
+  width: 70%;
+  margin-top: 5%;
+  margin-left: 15%;
+}
+
+.container{
+  display: flex;
+  flex-direction: row;
+}
+
+.izquierda{
+  width: 60%;
+}
+
+.derecha{
+  width: 30%;
+  margin-left: 40px;
+}
+
+.encabezado mat-card{
+  background-color: rgba(235, 238, 144, 0.534);
+}
+
+.productos{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 100px;
+}
+
+.productos button{
+  margin: 20px;
+}
+
+.producto{
+  width: 100%;
+  margin: 5px;
+  min-width: 200px;
+  z-index:0;
+}
+
+.carro-info{
+  background-color: rgba(211, 211, 211, 0.554);
+  z-index:0;
+}
+
+.contenido-producto{
+  display: flex;
+  width: 90%;
+}
+.contenido-producto p{
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 2%;
+  padding-top: 2%;
+  padding-bottom:2% ;
+  margin: 0;
+}
+
+.tituloCodigo{
+  font-weight: 100;
+  font-size: smaller;
+}
+
+.tituloNombre{
+  font-weight: 400;
+  font-size: medium;
+}
+
+.tituloEliminar{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.flex-spacer {
+  flex: 1 1 auto;
+  //position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.tituloCampo{
+  display: flex;
+}

@@ -1,0 +1,37 @@
+.container-header{
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-left: 30%;
+  padding-right: 30%;
+  background-color: rgb(40, 217, 99);
+  height: 15%;
+  z-index:10;
+}
+
+.flex-spacer {
+  flex: 1 1 auto;
+  //position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.logo {
+  height:100% ;
+  cursor: pointer;
+}
+
+.icono{
+   font-size: 40px;
+   height: 40px ;
+   width: 50px ;
+}
+
+.container-header button{
+  margin-left: 30px;
+  padding-top: 30px;
+  height: auto;
+ // z-index: 20;
+}

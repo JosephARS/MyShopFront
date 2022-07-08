@@ -1,0 +1,16 @@
+<mat-toolbar class="container-header">
+
+  <img class="logo" src="/assets/imagenes/logo.png" alt="logo" (click)="onClickHome()">
+
+  <span class="flex-spacer"></span>
+
+  <button mat-icon-button (click)="onClickCarrito()" >
+    <mat-icon class="icono" matBadge={{cantidadArticulos}} [matBadgeHidden]="cantidadArticulos === 0" matBadgeSize="medium" matBadgeColor="accent" matBadgeOverlap="true">shopping_cart</mat-icon>
+  </button>
+
+  <button mat-icon-button (click)="onClickAdmin()" >
+    <mat-icon class="icono" matBadge={{cantidadArticulos}} [matBadgeHidden]="true">settings</mat-icon>
+  </button>
+
+
+</mat-toolbar>
