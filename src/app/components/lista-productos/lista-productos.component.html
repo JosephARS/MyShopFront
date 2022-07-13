@@ -1,6 +1,6 @@
 <div class="main-container">
 
-  <h3>Zapatos deportivos</h3>
+  <h3>Zapatos para la familia</h3>
 
   <div class="productos">
 
@@ -8,23 +8,24 @@
       <div class="imagen">
         <img src={{producto.imgUrl}} alt={{producto.nombre}}>
       </div>
-      <p>{{producto.nombre}}</p>
-      <p>{{producto.descripcion}}</p>
+      <p class="nombre">{{producto.nombre}}</p>
+      <p class="descripcion">{{producto.descripcion}}</p>
       <p class="precio">{{producto.precio | currency}}</p>
       <div class="botonAgregar">
-        <button mat-flat-button color="accent" (click)="onClickAgregar(producto)">
+
+        <p *ngIf="producto.stock >= 0" > No disponible :(</p>
+
+        <button mat-flat-button color="accent" (click)="onClickAgregar(producto)" *ngIf="producto.stock > 0">
           <span>Agregar al carrito</span>
         </button>
       </div>
 
 
     </div>
-
+    <div class="cargandoDatos" *ngIf="procesando">
+      <mat-spinner></mat-spinner>
+    </div>
   </div>
-
-  <p>{{total}}</p>
-  <p>{{comprados}}</p>
-
 
 
 </div>

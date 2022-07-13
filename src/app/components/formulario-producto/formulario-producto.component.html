@@ -1,0 +1,53 @@
+<div class="main-container">
+  <div class="containerForm">
+
+    <h3>Información del producto</h3>
+
+    <div  *ngIf="!ocultaEliminar">
+      <img class="imagen" [src]=productoSeleccionado.imgUrl alt="">
+    </div>
+
+    <form class="formulario" [formGroup]="productoForm" >
+
+      <mat-form-field appearance="outline" >
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" formControlName="nombre">
+        <mat-error *ngIf="productoForm.invalid">Ingrese un nombre de artículo.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <input matInput type="text" formControlName="descripcion">
+        <mat-error *ngIf="productoForm.invalid">Ingrese una descripción de artículo.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" >
+        <mat-label>Imagen</mat-label>
+        <input matInput type="url" formControlName="imgUrl">
+        <mat-error *ngIf="productoForm.invalid">Debe adjuntar una imagen del artículo</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Stock</mat-label>
+        <input type="number" matInput formControlName="stock" placeholder="1 - 100" min="0" max="100">
+        <mat-error *ngIf="productoForm.invalid">Ingrese un numero. Maximo 100 unidades</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Precio</mat-label>
+        <input matInput type="number" formControlName="precio" placeholder="$0" min="1">
+        <mat-error *ngIf="productoForm.invalid">Ingrese el precio del artículo</mat-error>
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" (click)="guardarProducto()">Guardar</button>
+      <button mat-flat-button color="warn" (click)="eliminarProducto()" *ngIf="!ocultaEliminar">Eliminar</button>
+
+      <div class="cargandoDatos" *ngIf="procesando">
+        <mat-spinner></mat-spinner>
+      </div>
+
+    </form>
+  </div>
+
+
+</div>

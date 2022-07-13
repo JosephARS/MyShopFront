@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Producto } from 'src/app/models/producto';
 
 @Injectable({
@@ -12,26 +13,31 @@ export class CarritoComprasService {
   articulos = new EventEmitter<number>();
   total = new EventEmitter<number>();
 
-  constructor() { }
+  constructor(private snackBar: MatSnackBar, ) { }
 
-  agregarProducto(producto:Producto){
+  agregarProducto(producto:Producto): string{
 
-    let prodEncontrado = this.arrProductosSeleccionados.find(item => item.id === producto.id);
-
+    let prodEncontrado = this.arrProductosSeleccionados.find(item => item.idInventario === producto.idInventario);
+console.log(prodEncontrado?.cantidadCompra! > prodEncontrado?.stock! );
     if(prodEncontrado){
-      prodEncontrado.cantidadCompra ++;
-
+      if(prodEncontrado.cantidadCompra+1 <= prodEncontrado.stock){
+        prodEncontrado.cantidadCompra ++;
+        return "Producto agregado al carrito";
+      }else{
+        return "No puedes agregar más unidades de esta referencia.";
+      }
     }else{
       producto.cantidadCompra = 1;
-      this.arrProductosSeleccionados.push(producto)
+      this.arrProductosSeleccionados.push(producto);
+      return "Producto agregado al carrito";
     }
 
   }
 
   borrarProducto(producto:Producto){
-    const prodEncontrado = this.arrProductosSeleccionados.find(item => item.id === producto.id)
+    const prodEncontrado = this.arrProductosSeleccionados.find(item => item.idInventario === producto.idInventario)
 
-    this.arrProductosSeleccionados = this.arrProductosSeleccionados.filter(item => item.id !== producto.id)
+    this.arrProductosSeleccionados = this.arrProductosSeleccionados.filter(item => item.idInventario !== producto.idInventario)
     this.calcularTotal();
 
   }
@@ -48,6 +54,15 @@ export class CarritoComprasService {
     this.total.emit(this.totalValor);
     return this.totalValor;
 
+  }
+
+  public abrirSnackBar(mensaje:string) {
+    let config = new MatSnackBarConfig();
+    config.duration = 3000;
+    config.verticalPosition = "top";
+    config.panelClass = ['blue-snackbar'];
+
+    this.snackBar.open(mensaje, 'Ocultar', config);
   }
 
 }

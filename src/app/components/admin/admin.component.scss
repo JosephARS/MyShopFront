@@ -9,6 +9,7 @@
 }
 
 .mat-elevation-z8{
+  margin-left: 10%;
   width: 80%;
 }
 
@@ -24,4 +25,42 @@ table{
 .botonSuspender{
   background-color: mediumseagreen;
   width: 120px;
+}
+
+.imagen{
+  width: 30px; height: 30px;
+}
+
+.crearBtn{
+  width: 100%;
+  justify-content: right;
+  align-items: center;
+  margin-top: 50px;
+  // margin-bottom: 0px;
+  position: relative;
+  bottom: 10px;
+  right: 10%;
+  display: flex;
+}
+
+.ventanaLateral{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(206, 34, 34, 0.857);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.mat-row .mat-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+.mat-row:hover .mat-cell {
+  border-color: currentColor;
 }

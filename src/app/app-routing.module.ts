@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './components/admin/admin.component';
 import { CarritoComprasComponent } from './components/carrito-compras/carrito-compras.component';
+import { FormularioProductoComponent } from './components/formulario-producto/formulario-producto.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { ListaProductosComponent } from './components/lista-productos/lista-productos.component';
 
@@ -13,6 +14,7 @@ const routes: Routes = [
       {path:'home', pathMatch:'full',component:ListaProductosComponent, },
       {path:'shopping', component:CarritoComprasComponent, },
       {path:'admin', component:AdminComponent, },
+      {path:'admin/producto/:idproducto', component:FormularioProductoComponent, },
     ]
   },
 //  {path:'login',component:LoginComponent},
