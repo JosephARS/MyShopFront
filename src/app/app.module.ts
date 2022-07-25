@@ -9,7 +9,11 @@ import { ListaProductosComponent } from './components/lista-productos/lista-prod
 import { CarritoComprasComponent } from './components/carrito-compras/carrito-compras.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { HeaderComponent } from './components/header/header.component';
-
+import { AdminComponent } from './components/admin/admin.component';
+import { FormularioProductoComponent } from './components/formulario-producto/formulario-producto.component';
+import { PagoComponent } from './components/pago/pago.component';
+import { VentasComponent } from './components/ventas/ventas.component';
+import { DialogoAnulacionComponent } from './components/dialogo-anulacion/dialogo-anulacion.component';
 
 //MATERIAL
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -23,9 +27,12 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import {MatStepperModule} from '@angular/material/stepper';
+import { MatSelectModule } from '@angular/material/select';
+import {MatMenuModule} from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
-import { AdminComponent } from './components/admin/admin.component';
-import { FormularioProductoComponent } from './components/formulario-producto/formulario-producto.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +42,10 @@ import { FormularioProductoComponent } from './components/formulario-producto/fo
     LayoutComponent,
     HeaderComponent,
     AdminComponent,
-    FormularioProductoComponent
+    FormularioProductoComponent,
+    PagoComponent,
+    VentasComponent,
+    DialogoAnulacionComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +63,12 @@ import { FormularioProductoComponent } from './components/formulario-producto/fo
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
-    MatInputModule
+    MatInputModule,
+    MatStepperModule,
+    MatSelectModule,
+    MatMenuModule,
+    MatProgressBarModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,17 @@
+<div>
+  <h1 mat-dialog-title>Anulación de proceso</h1>
+  <div mat-dialog-content>
+      <div class="container">
+
+        <span>Comentarios</span>
+        <mat-form-field appearance="outline">
+              <textarea matInput [(ngModel)]="observacion" placeholder="Ingrese el motivo de la anulacion" appearance="outline"  required></textarea>
+          </mat-form-field>
+
+      </div>
+  </div>
+  <div mat-dialog-actions>
+      <button mat-raised-button (click)="cerrarDialogo()">Cancelar</button>
+      <button mat-stroked-button color="warn" [disabled]="observacion==='' " (click)="confirmado(observacion)" >Confirmar</button>
+  </div>
+</div>

@@ -21,9 +21,11 @@ h3{
 .producto{
   display: flex;
   flex-direction: column;
+  padding: 1%;
   width: 19%;
   margin: 5px;
   border: 1px solid gray;
+  border-radius: 10px;
   min-width: 200px;
 }
 

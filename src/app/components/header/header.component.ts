@@ -37,8 +37,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onClickHome(){
     this.router.navigate(['home']);
   }
-  onClickAdmin(){
-    this.router.navigate(['admin']);
+  onClickInventario(){
+    this.router.navigate(['inventario']);
+  }
+  onClickVentas(){
+    this.router.navigate(['ventas']);
   }
 
 

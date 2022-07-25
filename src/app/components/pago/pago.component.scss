@@ -1,0 +1,111 @@
+.main-container{
+  width: 80%;
+  height: 100%;
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+.container{
+  display: flex;
+  flex-direction: row;
+}
+
+.izquierda{
+  width: 60%;
+}
+
+.derecha{
+  width: 30%;
+  margin-left: 40px;
+}
+
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.containerForm{
+  width: 95%;
+  margin-bottom: 10%;
+  padding: 10px;
+  border-width: 2px;
+  border-radius: 15px;
+  border: solid 1px rgba(128, 128, 128, 0.226);
+  text-align: -webkit-center;
+  background-color: rgba(221, 222, 203, 0.365);
+
+}
+
+.formulario{
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+.formulario mat-form-field{
+  margin-top: 5px;
+  width: 60%;
+}
+
+.formulario2{
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.formulario2 mat-form-field{
+  width: 45%;
+  margin-right: 5px;
+}
+
+.flex-spacer {
+  flex: 1 1 auto;
+  //position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.tituloCampo{
+  display: flex;
+}
+
+.deshabilitar{
+   pointer-events: none !important;
+}
+
+
+.cargandoDatos {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.tituloPago{
+  width: 400px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.aprobada{
+  background-color: rgb(60, 176, 60);
+}
+
+.declinada{
+  background-color: rgba(255, 99, 71, 0.603);
+}
+
+.btnLlenarCampos{
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-color: transparent;
+  position: absolute;
+}

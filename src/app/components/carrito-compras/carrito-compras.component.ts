@@ -45,4 +45,8 @@ export class CarritoComprasComponent implements OnInit, OnDestroy {
     this.listaArticulosCarrito = this.carritoComprasService.arrProductosSeleccionados;
   }
 
+  onClickPagar(){
+    this.router.navigate(['payment']);
+  }
+
 }

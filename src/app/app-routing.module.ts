@@ -5,6 +5,8 @@ import { CarritoComprasComponent } from './components/carrito-compras/carrito-co
 import { FormularioProductoComponent } from './components/formulario-producto/formulario-producto.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { ListaProductosComponent } from './components/lista-productos/lista-productos.component';
+import { PagoComponent } from './components/pago/pago.component';
+import { VentasComponent } from './components/ventas/ventas.component';
 
 const routes: Routes = [
   { path:'',
@@ -13,8 +15,10 @@ const routes: Routes = [
       {path:'',redirectTo:'home', pathMatch:'full'},
       {path:'home', pathMatch:'full',component:ListaProductosComponent, },
       {path:'shopping', component:CarritoComprasComponent, },
-      {path:'admin', component:AdminComponent, },
-      {path:'admin/producto/:idproducto', component:FormularioProductoComponent, },
+      {path:'inventario', component:AdminComponent, },
+      {path:'inventario/producto/:idproducto', component:FormularioProductoComponent, },
+      {path:'payment', component:PagoComponent, },
+      {path:'ventas', component:VentasComponent, },
     ]
   },
 //  {path:'login',component:LoginComponent},

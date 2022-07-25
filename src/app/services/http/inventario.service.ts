@@ -31,4 +31,8 @@ export class InventarioService {
     return this.http.delete<any>(this.Url + idInventario)
   }
 
+  putUpdateStock(productoLista: Producto[], accion:String){
+    return this.http.put<any>(this.Url + 'stock/' + accion, productoLista)
+  }
+
 }

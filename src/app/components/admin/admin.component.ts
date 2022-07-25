@@ -22,15 +22,6 @@ export class AdminComponent implements OnInit {
     private router: Router,) { }
 
   ngOnInit(): void {
-    // this.arrProductos = [
-    //   new Producto(1,"Zapato clasico", "https://ofi5.com/wp-content/uploads/2016/03/ZAPATO-CLASICO-HOMBRE.png", 120000, "Zapata para ocasiones especiales"),
-    //   new Producto(2,"Zapato deportivo", "https://st.depositphotos.com/2168411/5116/i/600/depositphotos_51162959-stock-photo-new-running-shoe-sneaker-or.jpg", 170000, "Zapata para ejercicio"),
-    //   new Producto(3,"Zapato clasico", "https://ofi5.com/wp-content/uploads/2016/03/ZAPATO-CLASICO-HOMBRE.png", 120000, "Zapata para ocasiones especiales, fiestas y ceremonias"),
-    //   new Producto(4,"Zapato deportivo", "https://st.depositphotos.com/2168411/5116/i/600/depositphotos_51162959-stock-photo-new-running-shoe-sneaker-or.jpg", 170000, "Zapata para ejercicio"),
-    //   new Producto(5,"Zapato clasico", "https://ofi5.com/wp-content/uploads/2016/03/ZAPATO-CLASICO-HOMBRE.png", 120000, "Zapata para ocasiones especiales"),
-    //   new Producto(6,"Zapato deportivo", "https://st.depositphotos.com/2168411/5116/i/600/depositphotos_51162959-stock-photo-new-running-shoe-sneaker-or.jpg", 170000, "Zapata para ejercicio"),
-
-    // ]
 
     this.procesando = true;
     this.inventarioService.getProductList().subscribe(data => {

@@ -1,0 +1,172 @@
+<button class="btnLlenarCampos" (click)="onLlenarCampos()"> </button>
+<div class="main-container">
+
+  <div class="cargandoDatos" *ngIf="procesando">
+    <mat-spinner></mat-spinner>
+    <h1> Estamos procesando tu pago...</h1>
+  </div>
+  <div class="container">
+
+    <div class="izquierda">
+      <div class="containerForm">
+
+        <div *ngIf="mostrarEmail">
+          <p>Ingresa tu Email para comenzar</p>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" [(ngModel)]="emailValidacion" required>
+          </mat-form-field>
+          <button mat-button (click)="onValidarEmail()">Validar</button>
+        </div>
+
+        <mat-stepper [linear]="true"  [disableRipple]="false" #stepper *ngIf="!mostrarEmail">
+          <mat-step [stepControl]="shippingForm" [editable]="mostrarDatosPersona">
+            <ng-template matStepLabel>Datos personales</ng-template>
+            <form class="formulario" [formGroup]="shippingForm">
+              <mat-form-field appearance="fill">
+                <mat-label>Dirección envio</mat-label>
+                <input matInput type="text" formControlName="direccion">
+                <mat-error *ngIf="shippingForm.invalid">Ingrese una direccion</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Departamento</mat-label>
+                <input matInput type="text" formControlName="depto">
+                <mat-error *ngIf="shippingForm.invalid">Ingrese un departamento.</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Ciudad</mat-label>
+                <input matInput type="text" formControlName="ciudad">
+                <mat-error *ngIf="shippingForm.invalid">Ingrese una ciudad.</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Nombre</mat-label>
+                <input matInput type="text" formControlName="nombre">
+                <mat-error *ngIf="shippingForm.invalid">Ingrese un nombre.</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Apellido</mat-label>
+                <input matInput type="text" formControlName="apellido">
+                <mat-error *ngIf="shippingForm.invalid">Ingrese un apellido.</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>N°. Documento</mat-label>
+                <input matInput type="text" formControlName="numDocumento" maxlength="10">
+                <mat-error *ngIf="shippingForm.invalid">Ingrese numero de documento.</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Telefono</mat-label>
+                <input matInput type="number" formControlName="telefono" max="9999999999">
+                <mat-error *ngIf="shippingForm.invalid">Ingrese un telefono de contacto.</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email">
+                <mat-error *ngIf="shippingForm.invalid">Ingrese un email.</mat-error>
+              </mat-form-field>
+              <div>
+                <button mat-raised-button matStepperNext (click)="onDatosPersonalesContinuar()">Continuar</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="paymentForm" label="Datos de pago" [editable]="mostrarDatosPago">
+            <form [formGroup]="paymentForm">
+              <div class="formulario2">
+                <mat-form-field appearance="outline">
+                  <mat-label>Numero de tarjeta</mat-label>
+                  <input matInput type="text" formControlName="numTarjeta" maxlength="16">
+                  <mat-error *ngIf="paymentForm.invalid">Ingrese numero de tarjeta válido.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Franquicia</mat-label>
+                  <mat-select formControlName="franquicia" (selectionChange)="onChangeFranquicia($event)" required >
+                    <mat-option *ngFor="let franquicia of listaFranquicias" [value]="franquicia" >{{franquicia}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Mes de expiracion</mat-label>
+                  <input matInput type="text" formControlName="mesExp">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Año de expiracion</mat-label>
+                  <input matInput type="text" formControlName="anioExp">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>CCV</mat-label>
+                  <input matInput type="text" formControlName="cvv">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Nombre del pagador</mat-label>
+                  <input matInput type="text" formControlName="nombre">
+                  <mat-error *ngIf="paymentForm.invalid">Ingrese nombre del titular de la tarjeta.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Apellido del pagador</mat-label>
+                  <input matInput type="text" formControlName="apellido">
+                  <mat-error *ngIf="paymentForm.invalid">Ingrese apellido del titular de la tarjeta.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>N°. Documento</mat-label>
+                  <input matInput type="text" formControlName="numDocumento" maxlength="10">
+                  <mat-error *ngIf="paymentForm.invalid">Ingrese numero de documento.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Telefono</mat-label>
+                  <input matInput type="number" formControlName="telefono" max="9999999999" maxlength="10">
+                  <mat-error *ngIf="paymentForm.invalid">Ingrese un telefono de contacto.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput type="email" formControlName="email">
+                  <mat-error *ngIf="paymentForm.invalid">Ingrese un email.</mat-error>
+                </mat-form-field>
+              </div>
+              <br>
+              <div>
+                <button mat-button matStepperPrevious>Regresar</button>
+                <button mat-raised-button matStepperNext (click)="onValidarPago()">Continuar</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step class="deshabilitar" [editable]="mostrarDatosPago">
+            <ng-template matStepLabel>PAGO</ng-template>
+            <div *ngIf="respuestaPago.state != ''">
+              <p><span class="tituloPago">Numero proceso pago: </span> {{respuestaPago.orderId}}</p>
+              <p><span class="tituloPago">Numero transacción: </span> {{respuestaPago.transactionId}}</p>
+              <p><span class="tituloPago">Valor: </span> {{totalValor | currency}}</p>
+              <p><span class="tituloPago">Fecha: </span> {{respuestaPago.operationDate | date}}</p>
+              <p [ngClass]="respuestaPago.state === 'APPROVED' ? 'aprobada' : 'declinada' " ><span class="tituloPago">Estado transaccion:  </span> {{respuestaPago.state === 'APPROVED' ? "APROBADA": "DECLINADA"}}</p>
+              <div>
+                <button mat-button matStepperPrevious *ngIf="mostrarDatosPago">Regresar</button>
+                <button mat-button (click)="onVolverATienda()">Volver a la tienda</button>
+              </div>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      </div>
+
+    </div>
+
+
+    <div class="derecha">
+      <mat-card class="mat-elevation-z3 carro-info" >
+        <mat-card-header>
+          <mat-card-title>Resumen de tu compra</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <p class="tituloCampo"><span>Subtotal: </span><span class="flex-spacer"></span> {{totalValor | currency}}</p>
+          <p class="tituloCampo"><span>Envio gratis: </span> <span class="flex-spacer"></span> {{ 0 | currency}} </p>
+          <hr>
+          <p class="tituloCampo"><span><strong>Total </strong> </span><span class="flex-spacer"></span> {{totalValor | currency}} </p>
+
+        </mat-card-content>
+
+      </mat-card>
+
+    </div>
+
+  </div>
+
+
+
+</div>

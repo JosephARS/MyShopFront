@@ -126,8 +126,6 @@ export class FormularioProductoComponent implements OnInit {
         this.procesando = false;
 
       });
-    }else{
-      alert("holaaaaaaaaaa");
     }
 
   }

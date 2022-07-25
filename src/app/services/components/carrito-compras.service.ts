@@ -18,7 +18,7 @@ export class CarritoComprasService {
   agregarProducto(producto:Producto): string{
 
     let prodEncontrado = this.arrProductosSeleccionados.find(item => item.idInventario === producto.idInventario);
-console.log(prodEncontrado?.cantidadCompra! > prodEncontrado?.stock! );
+
     if(prodEncontrado){
       if(prodEncontrado.cantidadCompra+1 <= prodEncontrado.stock){
         prodEncontrado.cantidadCompra ++;
@@ -55,6 +55,15 @@ console.log(prodEncontrado?.cantidadCompra! > prodEncontrado?.stock! );
     return this.totalValor;
 
   }
+
+  public vaciarCarrito(){
+    this.totalValor = 0;
+    this.totalArticulos = 0;
+    this.articulos.emit(this.totalArticulos);
+    this.total.emit(this.totalValor);
+    this.arrProductosSeleccionados= [];
+   }
+
 
   public abrirSnackBar(mensaje:string) {
     let config = new MatSnackBarConfig();
