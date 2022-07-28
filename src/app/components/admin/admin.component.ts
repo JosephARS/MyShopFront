@@ -41,11 +41,14 @@ export class AdminComponent implements OnInit {
 
   onProductoSeleccionado(producto: Producto, index: number){
     console.log(producto)
-    this.router.navigate(['admin/producto/' + producto.idInventario]);
+                    let currentUrl = this.router.url;
+
+                console.log(currentUrl);
+    this.router.navigate(['inventario/producto/' + producto.idInventario]);
   }
 
   onClickCrearProducto(){
-    this.router.navigate(['admin/producto/0']);
+    this.router.navigate(['inventario/producto/0']);
     console.log("ABc")
   }
 

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfirmarVentaRequest } from 'src/app/models/confirmarVentaRequest';
 import { Venta } from 'src/app/models/venta';
@@ -13,8 +13,14 @@ export class VentasService {
   Url = 'http://localhost:52/ventas/';
 
 
-  postConfirmarVenta(ventaRequest: ConfirmarVentaRequest){
-    return this.http.post<any>(this.Url, ventaRequest)
+  postConfirmarVenta(ventaRequest: ConfirmarVentaRequest,idToken?:any, maskedCardNumber?:any, franquicia?:any){
+    let params = new HttpParams();
+    if (idToken != null) {
+      params = params.append('idToken',idToken);
+      params = params.append('maskedCardNumber',maskedCardNumber);
+      params = params.append('franquicia',franquicia);
+    }
+    return this.http.post<any>(this.Url, ventaRequest,{params: params} )
   }
 
   getVentasList(){

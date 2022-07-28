@@ -70,7 +70,24 @@
           </mat-step>
           <mat-step [stepControl]="paymentForm" label="Datos de pago" [editable]="mostrarDatosPago">
             <form [formGroup]="paymentForm">
-              <div class="formulario2">
+              <div class="tarjetas" *ngIf="mostrarTarjetas">
+                <h3>Tus tarjetas</h3>
+                <div class="tarjeta" *ngFor="let card of clienteDetail.cardList">
+
+                  <p>{{card.creditCard}} - {{card.franquicia}}</p>
+                  <span class="flex-spacer"></span>
+                  <div class="botonPagar">
+                    <span class="flex-spacer"></span>
+                    <button mat-raised-button color="warn"  (click)="onPagoTarjetaToken(card)">Pagar</button>
+                  </div>
+                </div>
+
+                <div class="tarjeta nuevaTarjeta" (click)="onMostrarTarjeta()">
+                  <p>Usar nueva tarjeta</p>
+                </div>
+              </div>
+
+              <div class="formulario2" *ngIf="!mostrarTarjetas">
                 <mat-form-field appearance="outline">
                   <mat-label>Numero de tarjeta</mat-label>
                   <input matInput type="text" formControlName="numTarjeta" maxlength="16">
@@ -119,12 +136,16 @@
                   <input matInput type="email" formControlName="email">
                   <mat-error *ngIf="paymentForm.invalid">Ingrese un email.</mat-error>
                 </mat-form-field>
+                <mat-checkbox class="example-margin" [(ngModel)]="checkedSaveCard" [ngModelOptions]="{standalone: true}">Guardar esta tarjeta</mat-checkbox>
+
               </div>
-              <br>
-              <div>
-                <button mat-button matStepperPrevious>Regresar</button>
+              <div *ngIf="!mostrarTarjetas">
+                <button mat-button *ngIf="cardList.length > 0" (click)="onMostrarTarjeta()" >Atras</button>
+                <button mat-button matStepperPrevious *ngIf="cardList.length  == 0">Regresar</button>
                 <button mat-raised-button matStepperNext (click)="onValidarPago()">Continuar</button>
               </div>
+              <br>
+
             </form>
           </mat-step>
           <mat-step class="deshabilitar" [editable]="mostrarDatosPago">
@@ -139,6 +160,10 @@
                 <button mat-button matStepperPrevious *ngIf="mostrarDatosPago">Regresar</button>
                 <button mat-button (click)="onVolverATienda()">Volver a la tienda</button>
               </div>
+            </div>
+            <div *ngIf="pagoSinProcesar">
+              <ng-container ><h2>NO HEMOS PODIDO PROCESAR TU PAGO. INTENTA MAS TARDE</h2></ng-container>
+              <button mat-button (click)="onVolverATienda()">Volver a la tienda</button>
             </div>
           </mat-step>
         </mat-stepper>

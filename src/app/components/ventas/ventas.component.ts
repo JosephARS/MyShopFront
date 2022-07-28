@@ -18,7 +18,7 @@ import { DialogoAnulacionComponent } from '../dialogo-anulacion/dialogo-anulacio
 })
 export class VentasComponent implements OnInit {
 
-  displayedColumns: string[] = ['idVenta', 'estado', 'precio', 'cliente', 'direccion', 'fecha', 'anular'];
+  displayedColumns: string[] = ['idVenta', 'estado', 'valor', 'cliente', 'shipping', 'fecha', 'anular'];
   dataSource = new MatTableDataSource<any>();
   procesando = false;
   ventasLista: Venta[] = [];
@@ -89,7 +89,7 @@ console.log(data)
                 this.abrirSnackBar("Anulación de pago realizada con éxito");
                 let currentUrl = this.router.url;
                 this.router.navigateByUrl('/', {skipLocationChange: true})
-                .then( () => this.router.navigate([currentUrl]));
+                  .then( () => this.router.navigate([currentUrl]));
                 console.log(currentUrl);
               }else{
                 this.abrirSnackBar("Error intentando actualizar stock.");

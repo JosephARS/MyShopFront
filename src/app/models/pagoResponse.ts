@@ -9,4 +9,6 @@ export class PagoResponse{
   errorCode:String = "";
   responseMessage:String = "";
   operationDate!: Date;
+  creditCardTokenId!: string;
+  maskedCardNumber!: string;
 }

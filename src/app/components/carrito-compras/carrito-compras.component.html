@@ -28,7 +28,7 @@
               <p><span>Cantidad: {{producto.cantidadCompra}} </span>
                 <br><br><br>
                 <span>{{producto.cantidadCompra * producto.precio | currency}}</span></p>
-              <p (click)="onClickEliminar(producto)"> <span class="tituloEliminar">Eliminar</span></p>
+              <p > <span class="tituloEliminar" (click)="onClickEliminar(producto)">Eliminar</span></p>
 
             </mat-card-content>
           </mat-card>

@@ -12,5 +12,5 @@ export class PagoRequest{
   creditCard: CreditCard = new CreditCard;
   paymentMethod: string = "";
   paymentCountry: string = "";
-
+  creditCardTokenId: string = "";
 }

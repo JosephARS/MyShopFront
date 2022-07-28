@@ -8,7 +8,7 @@ export class Venta{
   idVenta!: number
   idPago!: number;
   estado!: String;
-  precio!: number;
+  valor!: number;
   fecha!: Date;
   cliente: Cliente = new Cliente;
   shipping: Shipping = new Shipping;

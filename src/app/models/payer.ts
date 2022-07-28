@@ -1,7 +1,7 @@
 import { ShippingAddress } from "./shippingAddress";
 
 export class Payer{
-  merchantPayerrId: String = "";
+  merchantPayerId: String = "";
   fullName:String = "";
   emailAddress:String = "";
   contactPhone:String = "";

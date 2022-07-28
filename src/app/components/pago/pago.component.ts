@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { ClienteDetail } from 'src/app/models/clienteDetail';
 import { ConfirmarVentaRequest } from 'src/app/models/confirmarVentaRequest';
@@ -8,6 +9,7 @@ import { PagoRequest } from 'src/app/models/pagoRequest';
 import { PagoResponse } from 'src/app/models/pagoResponse';
 import { Producto } from 'src/app/models/producto';
 import { ShippingAddress } from 'src/app/models/shippingAddress';
+import { TokenizedCard } from 'src/app/models/tokenizedCard';
 import { CarritoComprasService } from 'src/app/services/components/carrito-compras.service';
 import { InventarioService } from 'src/app/services/http/inventario.service';
 import { TransactionalService } from 'src/app/services/http/transactional.service';
@@ -20,9 +22,15 @@ import { VentasService } from 'src/app/services/http/ventas.service';
 })
 export class PagoComponent implements OnInit {
 
+  @ViewChild('stepper')
+  private myStepper!: MatStepper;
+
   numDocumento: String ='';
   procesando = false;
   respuestaPago = new PagoResponse();
+  pagoSinProcesar = false;
+  checkedSaveCard = false;
+  withToken = false;
 
   listaFranquicias: String[] = ["VISA", "MASTERCARD", "AMEX"]
 
@@ -58,6 +66,9 @@ export class PagoComponent implements OnInit {
   mostrarEmail = true;
   emailValidacion = null;
   clienteDetail = new ClienteDetail();
+  cardList: TokenizedCard[] = [];
+  tokenizedCardSelected!: TokenizedCard;
+  mostrarTarjetas = false;
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
@@ -87,39 +98,62 @@ export class PagoComponent implements OnInit {
     });
   }
 
-onValidarEmail(){
-  if (this.emailValidacion != null) {
-    this.ventasService.getUsuarioInfo(this.emailValidacion).subscribe(data => {
-      if (data.tipoRespuesta == 'Exito') {
+  onValidarEmail(){
+    if (this.emailValidacion != null) {
+      this.ventasService.getUsuarioInfo(this.emailValidacion).subscribe(data => {
+        if (data.tipoRespuesta == 'Exito') {
 
-        if (data.resultado) {
-          this.clienteDetail = data.resultado;
-          this.shippingForm.controls.direccion.setValue(this.clienteDetail.shipping.direccion);
-          this.shippingForm.controls.ciudad.setValue(this.clienteDetail.shipping.ciudad);
-          this.shippingForm.controls.depto.setValue(this.clienteDetail.shipping.departamento);
-          this.shippingForm.controls.nombre.setValue(this.clienteDetail.cliente.nombre);
-          this.shippingForm.controls.apellido.setValue(this.clienteDetail.cliente.apellido);
-          this.shippingForm.controls.numDocumento.setValue(this.clienteDetail.cliente.dni);
-          this.shippingForm.controls.email.setValue(this.clienteDetail.cliente.email);
-          this.shippingForm.controls.telefono.setValue(this.clienteDetail.cliente.telefono);
-          console.log(data)
+          if (data.resultado) {
+            this.clienteDetail = data.resultado;
+            if (this.clienteDetail.cardList.length > 0) {
+              this.cardList = this.clienteDetail.cardList;
+              this.mostrarTarjetas = true;
+            }
+            this.shippingForm.controls.direccion.setValue(this.clienteDetail.shipping.direccion);
+            this.shippingForm.controls.ciudad.setValue(this.clienteDetail.shipping.ciudad);
+            this.shippingForm.controls.depto.setValue(this.clienteDetail.shipping.departamento);
+            this.shippingForm.controls.nombre.setValue(this.clienteDetail.cliente.nombre);
+            this.shippingForm.controls.apellido.setValue(this.clienteDetail.cliente.apellido);
+            this.shippingForm.controls.numDocumento.setValue(this.clienteDetail.cliente.dni);
+            this.shippingForm.controls.telefono.setValue(this.clienteDetail.cliente.telefono);
+            console.log(data)
+          }
+          this.shippingForm.controls.email.setValue(this.emailValidacion);
         }
-
-      }
-      this.mostrarEmail = false;
-   })
+        this.mostrarEmail = false;
+    })
+    }
   }
-}
+
+  onMostrarTarjeta(){
+    this.mostrarTarjetas = !this.mostrarTarjetas;
+  }
+
+  onPagoTarjetaToken(card: TokenizedCard){
+    this.tokenizedCardSelected = card;
+    this.paymentForm.controls.cvv.setValue("777")
+    this.paymentForm.controls.franquicia.setValue(card.franquicia)
+    this.paymentForm.disable();
+    this.myStepper.next();
+    this.onValidarPago();
+  }
 
   onValidarPago(){
-    console.log("NO ENTRA")
-    if (!this.paymentForm.invalid) {
-      console.log("SI ENTRA")
+
+    if (!this.paymentForm.invalid || this.tokenizedCardSelected) {
+
       this.respuestaPago = new PagoResponse();
       const pagoReq = new PagoRequest();
       this.procesando = true;
+
+      if(this.checkedSaveCard || this.tokenizedCardSelected != undefined){
+        console.log(this.checkedSaveCard , this.tokenizedCardSelected)
+        this.withToken = true;
+        pagoReq.creditCardTokenId = this.tokenizedCardSelected?.token;
+
+      }
+
       pagoReq.totalPrice = this.totalValor;
-      //pagoReq.totalPrice = 65000;
       pagoReq.totalTax = 0;
       pagoReq.currency = "COP";
       pagoReq.paymentMethod = this.paymentForm.value.franquicia!;
@@ -145,7 +179,7 @@ onValidarEmail(){
       pagoReq.payer.dniNumber = this.paymentForm.value.numDocumento!;
       pagoReq.payer.emailAddress = this.paymentForm.value.email!;
       pagoReq.payer.fullName = this.paymentForm.value.nombre! + " " + this.paymentForm.value.apellido!;
-      pagoReq.payer.merchantPayerrId = "1";
+      pagoReq.payer.merchantPayerId = "1";
       pagoReq.payer.billingAddress = address;
 
       pagoReq.creditCard.securityCode = this.paymentForm.value.cvv!;
@@ -153,13 +187,13 @@ onValidarEmail(){
       pagoReq.creditCard.expirationDate = this.paymentForm.value.anioExp! + "/" + this.paymentForm.value.mesExp;
       pagoReq.creditCard.name = "APPROVED";
 
-        this.transactionalService.postValidarPago(pagoReq).subscribe(data => {
+        this.transactionalService.postValidarPago(pagoReq, this.withToken).subscribe(data => {
 
           if (data.tipoRespuesta == 'Exito') {
-          // this.abrirSnackBar("Pago exitosamente.");
+
             this.respuestaPago = data.resultado;
             console.log(data);
-            if(this.respuestaPago.networkResponseCode === "00"){
+            if(this.respuestaPago.networkResponseCode === "00" || this.respuestaPago.state=="APPROVED"){
               this.confirmarVenta();
               this.carritoComprasService.vaciarCarrito();
             } else if (this.respuestaPago.networkResponseCode === null){
@@ -171,6 +205,7 @@ onValidarEmail(){
 
           }else{
             console.log(data);
+            this.pagoSinProcesar = true;
             this.abrirSnackBar("Error intentando validar el pago.");
           }
           this.procesando = false;
@@ -198,7 +233,12 @@ onValidarEmail(){
     ventaReq.shipping.postalCode = "000000";
     ventaReq.listaProductos = this.listaProductos;
 
-    this.ventasService.postConfirmarVenta(ventaReq).subscribe(data => {
+    const idToken = this.respuestaPago.creditCardTokenId!;
+    const maskedCardNumber = this.respuestaPago.maskedCardNumber!;
+    const franquicia = this.paymentForm.value.franquicia!;
+    console.log(idToken, maskedCardNumber, franquicia)
+
+    this.ventasService.postConfirmarVenta(ventaReq, idToken, maskedCardNumber, franquicia).subscribe(data => {
 
       if (data.tipoRespuesta == 'Exito') {
 
@@ -209,6 +249,7 @@ onValidarEmail(){
             this.abrirSnackBar("Gracias por su compra.");
             this.mostrarDatosPago= false;
             this.mostrarDatosPersona = false;
+            this.pagoSinProcesar = false;
           }else{
             console.log(data);
             this.mostrarDatosPago= true;
