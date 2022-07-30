@@ -10,7 +10,8 @@ export class VentasService {
 
   constructor(private http: HttpClient) { }
 
-  Url = 'http://localhost:52/ventas/';
+  Url = 'http://localhost:8000/ventas/';
+//  Url = 'http://localhost:52/ventas/';
 
 
   postConfirmarVenta(ventaRequest: ConfirmarVentaRequest,idToken?:any, maskedCardNumber?:any, franquicia?:any){
