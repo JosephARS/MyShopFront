@@ -12,8 +12,11 @@
       <p class="descripcion">{{producto.descripcion}}</p>
       <p class="precio">{{producto.precio | currency}}</p>
       <div class="botonAgregar">
+        <button mat-flat-button color="accent" (click)="onClickAgregar(producto)" *ngIf="producto.stock <= 0" disabled="true">
+          <span>Agotado :(</span>
+        </button>
 
-        <p *ngIf="producto.stock <= 0" > Agotado :(</p>
+
 
         <button mat-flat-button color="accent" (click)="onClickAgregar(producto)" *ngIf="producto.stock > 0">
           <span>Agregar al carrito</span>

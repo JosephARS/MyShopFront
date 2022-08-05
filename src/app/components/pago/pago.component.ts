@@ -10,6 +10,7 @@ import { PagoResponse } from 'src/app/models/pagoResponse';
 import { Producto } from 'src/app/models/producto';
 import { ShippingAddress } from 'src/app/models/shippingAddress';
 import { TokenizedCard } from 'src/app/models/tokenizedCard';
+import { Venta } from 'src/app/models/venta';
 import { CarritoComprasService } from 'src/app/services/components/carrito-compras.service';
 import { InventarioService } from 'src/app/services/http/inventario.service';
 import { TransactionalService } from 'src/app/services/http/transactional.service';
@@ -82,6 +83,9 @@ export class PagoComponent implements OnInit {
 
     this.totalValor = this.carritoComprasService.totalValor;
     this.listaProductos = this.carritoComprasService.arrProductosSeleccionados;
+    if (this.totalValor == 0) {
+      this.router.navigate(['home'])
+    }
   }
 
   onDatosPersonalesContinuar(){
@@ -102,10 +106,11 @@ export class PagoComponent implements OnInit {
     if (this.emailValidacion != null) {
       this.ventasService.getUsuarioInfo(this.emailValidacion).subscribe(data => {
         if (data.tipoRespuesta == 'Exito') {
+          this.clienteDetail = data.resultado;
+          if (this.clienteDetail.cliente) {
 
-          if (data.resultado) {
-            this.clienteDetail = data.resultado;
-            if (this.clienteDetail.cardList.length > 0) {
+            console.log(data)
+            if (this.clienteDetail.cardList.length) {
               this.cardList = this.clienteDetail.cardList;
               this.mostrarTarjetas = true;
             }
@@ -126,6 +131,8 @@ export class PagoComponent implements OnInit {
   }
 
   onMostrarTarjeta(){
+    this.paymentForm.reset();
+    this.onDatosPersonalesContinuar();
     this.mostrarTarjetas = !this.mostrarTarjetas;
   }
 
@@ -187,28 +194,35 @@ export class PagoComponent implements OnInit {
       pagoReq.creditCard.expirationDate = this.paymentForm.value.anioExp! + "/" + this.paymentForm.value.mesExp;
       pagoReq.creditCard.name = "APPROVED";
 
-        this.transactionalService.postValidarPago(pagoReq, this.withToken).subscribe(data => {
+        this.transactionalService.postValidarPago(pagoReq, this.withToken).subscribe({
+          next: (data) => {
+            if (data.tipoRespuesta == 'Exito') {
 
-          if (data.tipoRespuesta == 'Exito') {
-
-            this.respuestaPago = data.resultado;
-            console.log(data);
-            if(this.respuestaPago.networkResponseCode === "00" || this.respuestaPago.state=="APPROVED"){
-              this.confirmarVenta();
-              this.carritoComprasService.vaciarCarrito();
-            } else if (this.respuestaPago.networkResponseCode === null){
-              this.mostrarDatosPago= true;
-              this.abrirSnackBar("No podemos procesar tu pago en este momento. Intenta más tarde.");
-            }else {
-              this.mostrarDatosPago= true;
+              this.respuestaPago = data.resultado;
+              console.log(data);
+              if(this.respuestaPago.networkResponseCode === "00" || this.respuestaPago.state=="APPROVED"){
+                this.confirmarVenta();
+                this.carritoComprasService.vaciarCarrito();
+              } else if (this.respuestaPago.networkResponseCode === null){
+                this.mostrarDatosPago= true;
+                this.abrirSnackBar("No podemos procesar tu pago en este momento. Intenta más tarde.");
+              }else {
+                this.mostrarDatosPago= true;
+              }
+              this.pagoSinProcesar = false;
+            }else{
+              console.log(data);
+              this.pagoSinProcesar = true;
+              this.abrirSnackBar("Error intentando validar el pago.");
             }
-
-          }else{
-            console.log(data);
-            this.pagoSinProcesar = true;
-            this.abrirSnackBar("Error intentando validar el pago.");
-          }
-          this.procesando = false;
+            this.procesando = false;
+        },
+          error: (err) => {
+            console.log("POST call in error", err);
+            this.abrirSnackBar("Intente nuevamente, por favor.");
+            this.procesando = false;
+          },
+          complete: () => console.info('complete')
         });
     }
 
@@ -220,7 +234,7 @@ export class PagoComponent implements OnInit {
     ventaReq.estado = this.respuestaPago.state;
     ventaReq.valor = this.totalValor;
     ventaReq.idPago = this.respuestaPago.pagoId;
-    ventaReq.cliente.idCliente = this.clienteDetail.cliente.idCliente!;
+    ventaReq.cliente.idCliente = this.clienteDetail?.cliente?.idCliente;
     ventaReq.cliente.nombre = this.shippingForm.value.nombre!;
     ventaReq.cliente.apellido = this.shippingForm.value.apellido!;
     ventaReq.cliente.dni = this.shippingForm.value.numDocumento!;
@@ -242,7 +256,9 @@ export class PagoComponent implements OnInit {
 
       if (data.tipoRespuesta == 'Exito') {
 
-        this.inventarioService.putUpdateStock(this.listaProductos, "venta").subscribe( data => {
+        const venta = data.resultado;
+
+        this.inventarioService.putUpdateStock(this.listaProductos, "venta", venta.idVenta).subscribe( data => {
 
           if (data.tipoRespuesta == 'Exito') {
 

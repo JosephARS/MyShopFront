@@ -83,7 +83,7 @@ console.log(data)
             this.listaProductos = data.listaResultado;
             let accion = "Anular"
 
-            this.inventarioService.putUpdateStock(this.listaProductos, accion).subscribe( data => {
+            this.inventarioService.putUpdateStock(this.listaProductos, accion, venta.idVenta).subscribe( data => {
               console.log(data)
               if (data.tipoRespuesta == 'Exito') {
                 this.abrirSnackBar("Anulación de pago realizada con éxito");

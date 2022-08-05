@@ -13,10 +13,6 @@ export class InventarioService {
  // Url = 'http://localhost:50/inventario/';
 
 
-   headers = new HttpHeaders()
-  .append('Access-Control-Allow-Methods', '*')
-  .append("Access-Control-Allow-Origin", 'http://localhost:4200');
-
   getProductList(){
     return this.http.get<any>(this.Url);
   }
@@ -37,8 +33,8 @@ export class InventarioService {
     return this.http.delete<any>(this.Url + idInventario)
   }
 
-  putUpdateStock(productoLista: Producto[], accion:String){
-    return this.http.put<any>(this.Url + 'stock/' + accion, productoLista)
+  putUpdateStock(productoLista: Producto[], accion:String, idVenta: number){
+    return this.http.put<any>(this.Url + 'stock/' + accion + '/' + idVenta, productoLista)
   }
 
 }
